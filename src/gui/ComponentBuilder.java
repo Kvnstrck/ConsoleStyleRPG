@@ -17,7 +17,7 @@ public class ComponentBuilder {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
                 if (keyEvent.getKeyChar() == '\n') {
-                    putCommandOntoConsole(inputField.getText(), textArea);
+                    putCommandOntoConsole(inputField.getText());
                     inputField.setText("");
                 }
             }
@@ -46,8 +46,8 @@ public class ComponentBuilder {
 
     }
 
-    public void putCommandOntoConsole(String string, JTextArea console) {
-        console.append(string+"\n");
+    public void putCommandOntoConsole(String string) {
+        this.textArea.append(string + "\n");
         System.out.println(string);
 
     }
