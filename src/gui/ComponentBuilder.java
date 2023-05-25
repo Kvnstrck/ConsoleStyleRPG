@@ -1,5 +1,8 @@
 package gui;
 
+import main.InfrastructureHandler;
+import infrastructure.ConsoleLogWriter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -7,9 +10,13 @@ import java.awt.event.KeyListener;
 
 public class ComponentBuilder {
 
-    JTextArea textArea = new JTextArea();
+    JTextArea console = new JTextArea();
+    ConsoleLogWriter logWriter = new ConsoleLogWriter();
 
-    public JTextField buildInputField() {
+
+    public JTextField buildInputField(InfrastructureHandler handler) {
+
+
         JTextField inputField = new JTextField();
         inputField.setHorizontalAlignment(SwingConstants.CENTER);
         inputField.setFont(new Font(Font.DIALOG, Font.BOLD, 18));
@@ -17,7 +24,10 @@ public class ComponentBuilder {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
                 if (keyEvent.getKeyChar() == '\n') {
-                    putCommandOntoConsole(inputField.getText());
+
+                    logWriter.writeInFile(inputField.getText());
+
+                    handler.consoleOutput(inputField.getText());
                     inputField.setText("");
                 }
             }
@@ -38,18 +48,17 @@ public class ComponentBuilder {
     public JTextArea buildOutputTextArea(String[] strings) {
 
         for (String string : strings) {
-            textArea.append(string + "\n");
+            console.append(string + "\n");
+            logWriter.writeInFile(string + "\n");
         }
-        textArea.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+        console.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+        console.setEditable(false);
 
-        return textArea;
-
-    }
-
-    public void putCommandOntoConsole(String string) {
-        this.textArea.append(string + "\n");
-        System.out.println(string);
+        return console;
 
     }
 
 }
+
+
+
